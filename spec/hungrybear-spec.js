@@ -7,6 +7,7 @@ describe('HungryBear', function() {
 
   beforeEach(function() {
     jasmine.clock().install();
+    fuzzy.setHunger();
   });
 
   afterEach(function() {
@@ -23,4 +24,23 @@ describe('HungryBear', function() {
     jasmine.clock().tick(3001);
     expect(fuzzy.foodLevel).toEqual(7);
   });
+
+  it('should get very hungry if food level drops below 0', function(){
+    fuzzy.foodLevel = 0;
+    expect(fuzzy.didYouGetEaten()).toEqual(true);
+  });
+
+  it('should get very hungry if 10 sec pass without feeding', function(){
+    jasmine.clock().tick(10001);
+    expect(fuzzy.didYouGetEaten()).toEqual(true);
+  });
+
+  it('should have a level of 10 if it is fed', function(){
+    jasmine.clock().tick(9001);
+    fuzzy.feed();
+    expect(fuzzy.foodLevel).toEqual(10);
+  });
 });
+
+
+
